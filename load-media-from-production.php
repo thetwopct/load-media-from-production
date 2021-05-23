@@ -22,11 +22,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! class_exists( 'Load_Media_from_Production' ) ) :
+if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 	/**
 	 * Load Media from Production
 	 */
-	class Load_Media_from_Production {
+	class Load_Media_From_Production {
 
 		/**
 		 * Production URL array
@@ -39,25 +39,26 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		/**
 		 * Construct
 		 */
-		function __construct() {
-			add_action( 'init', [ $this, 'lmfp_redirect_header' ] );
-			add_filter( 'plugin_action_links', [ $this, 'lmfp_add_settings_link' ], 99, 2 );
-			add_action( 'admin_menu', [ $this, 'lmfp_add_admin_menu' ], 99 );
-			add_action( 'cli_init', [ $this, 'lmfp_cli_register_commands' ] );
+		public function __construct() {
+			add_action( 'init', array( $this, 'lmfp_redirect_header' ) );
+			add_filter( 'plugin_action_links', array( $this, 'lmfp_add_settings_link' ), 99, 2 );
+			add_action( 'admin_menu', array( $this, 'lmfp_add_admin_menu' ), 99 );
+			add_action( 'cli_init', array( $this, 'lmfp_cli_register_commands' ) );
 		}
 
 		/**
 		 * Update header to redirect.
 		 */
-		function lmfp_redirect_header() {
-			$production_url = get_option( 'lmfp_production_url', false );
+		public function lmfp_redirect_header() {
+			$production_url = $this->lmfp_get_production_url();
 
-			if ( ! $production_url ) {
+			// the request from browser.
+			$request = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+			if ( ! $production_url || ! $request ) {
 				return;
 			}
 
-			// the request from browser.
-			$request = $_SERVER['REQUEST_URI'];
 			// the path of the request.
 			$path = $this->lmfp_get_path( $request );
 			// the uploads directory.
@@ -79,7 +80,7 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		 * @param array  $links Available links.
 		 * @param string $file File name.
 		 */
-		function lmfp_add_settings_link( $links, $file ) {
+		public function lmfp_add_settings_link( $links, $file ) {
 			if ( plugin_basename( __FILE__ ) == $file ) {
 				$settings_link = '<a href="' . admin_url( 'options-general.php?page=load-media-from-production' ) . '">Settings</a>';
 				array_unshift( $links, $settings_link );
@@ -90,34 +91,28 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		/**
 		 * Create page in Admin.
 		 */
-		function lmfp_add_admin_menu() {
-			add_options_page( 'Load Media from Production', 'Load Media from Production', 'manage_options', 'load-media-from-production', [ $this, 'lmfp_settings_page' ] );
+		public function lmfp_add_admin_menu() {
+			add_options_page( 'Load Media from Production', 'Load Media from Production', 'manage_options', 'load-media-from-production', array( $this, 'lmfp_settings_page' ) );
 		}
 
 		/**
 		 * Settings page setup.
 		 */
-		function lmfp_settings_page() {
+		public function lmfp_settings_page() {
 			// check for user level.
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die( 'Unauthorized user' );
-			}
-
-			// Validate nonce.
-			if ( isset( $_POST['submit'] ) && ! wp_verify_nonce( $_POST['lmfp-settings'], 'load-media-from-production' ) ) {
-				echo '<div class="notice notice-error"><p>Nonce verification failed</p></div>';
-				exit;
 			}
 
 			include 'includes/settings.php';
 		}
 
 		/**
-		 * Update header to redirect.
+		 * Get path from URL
 		 *
 		 * @param string $url URL path.
 		 */
-		function lmfp_get_path( $url ) {
+		public function lmfp_get_path( $url ) {
 			$args = parse_url( $url );
 			return $args['path'];
 		}
@@ -125,7 +120,7 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		/**
 		 * Get upload path.
 		 */
-		function lmfp_get_upload_path() {
+		public function lmfp_get_upload_path() {
 			$args = wp_upload_dir();
 			$base = $args['baseurl'];
 			return $this->lmfp_get_path( $base );
@@ -135,21 +130,23 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		 * Registers our command when cli get's initialized.
 		 *
 		 * @since  1.0.0
-		 * @author Scott Anderson
+		 * @author James Hunt
 		 */
-		function lmfp_cli_register_commands() {
-			if ( ! defined( 'WP_CLI' ) && ! WP_CLI ) return;
-			include 'includes/cli.php';
-			WP_CLI::add_command( 'load-media-from-production', 'Load_Media_from_Production_CLI' );
+		public function lmfp_cli_register_commands() {
+			if ( ! defined( 'WP_CLI' ) && ! WP_CLI ) {
+				return;
+			}
+			include 'includes/class-load-media-from-production-cli.php';
+			WP_CLI::add_command( 'load-media-from-production', 'Load_Media_From_Production_CLI' );
 		}
 
 		/**
-		 * Registers our command when cli get's initialized.
+		 * Gets the production URL.
 		 *
 		 * @since  1.0.0
-		 * @author Scott Anderson
+		 * @author James Hunt
 		 */
-		function lmfp_get_production_url() {
+		public function lmfp_get_production_url() {
 			$production_url = $this->production_url;
 
 			if ( defined( 'LOAD_MEDIA_FROM_PRODUCTION_URL' ) && LOAD_MEDIA_FROM_PRODUCTION_URL ) {
@@ -162,21 +159,21 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		}
 
 		/**
-		 * Registers our command when cli get's initialized.
+		 * Checks presence of defined constant.
 		 *
 		 * @since  1.0.0
-		 * @author Scott Anderson
+		 * @author James Hunt
 		 */
-		function lmfp_check_defined_constant() {
+		public function lmfp_check_defined_constant() {
 			return ( defined( 'LOAD_MEDIA_FROM_PRODUCTION_URL' ) && LOAD_MEDIA_FROM_PRODUCTION_URL );
 		}
 
 		/**
-		 * Check trim sanitize the URL.
+		 * Check trim and sanitize the URL.
 		 *
 		 * @param string $host URL hostname.
 		 */
-		function lmfp_sanitize_trim_check( $host ) {
+		public function lmfp_sanitize_trim_check( $host ) {
 			$host      = sanitize_text_field( $host );
 			$base_path = trim( $this->lmfp_get_upload_path(), '/' );
 			$host      = str_ireplace( $base_path, '', $host );
@@ -190,6 +187,6 @@ if ( ! class_exists( 'Load_Media_from_Production' ) ) :
 		}
 
 	} // end of class.
-	new Load_Media_from_Production();
+	new Load_Media_From_Production();
 
 endif;
