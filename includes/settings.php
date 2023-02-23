@@ -11,6 +11,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 // Validate nonce.
 if ( isset( $_POST['submit'] ) && ! isset( $_POST['lmfp-settings'] ) ) {
 	echo '<div class="notice notice-error"><p>Nonce verification failed</p></div>';

@@ -1,3 +1,6 @@
-Version 1.0 (2021-05-24)
-==========================
+Version 1.1 (2023-02-23)
+- Update Readme
+- Open Source plugin
+
+Version 1.0 (2020-05-24)
 - Initial release

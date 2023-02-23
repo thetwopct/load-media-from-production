@@ -4,15 +4,20 @@
  *
  * @package     WordPress
  * @author      James Hunt
+ * @copyright 	2023 James Hunt
  * @license     GPL-3.0+
  *
  * @wordpress-plugin
  * Plugin Name: Load Media from Production
  * Plugin URI: https://www.thetwopercent.co.uk
- * Description: Redirect all references to the uploads directory to another URL with the same file path. This plugin is useful if you want to work locally on a website without the need to download all of the media library. Options to set via WP-CLI or constant.
+ * Description: Redirect all references in your WordPress database to the uploads directory to another URL with the same file path. This plugin is useful if you want to work locally on a website without the need to download all of the media library. Options to set via WP-CLI or constant.
  * Author: James Hunt
- * Version: 1.0
+ * Version: 1.1.0
  * Author URI: https://www.thetwopercent.co.uk
+ * License:                 GPLv3 or later
+ * Requires PHP:            7.4
+ * Requires at least:       5.0
+ * Tested up to:            6.2
  */
 
 // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName.
@@ -33,11 +38,15 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 		 *
 		 * @since 1.0.0
 		 * @var string
+		 * @author James Hunt
 		 */
 		public $production_url = '';
 
 		/**
 		 * Construct
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function __construct() {
 			add_action( 'init', array( $this, 'lmfp_redirect_header' ) );
@@ -48,6 +57,9 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 
 		/**
 		 * Update header to redirect.
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function lmfp_redirect_header() {
 			$production_url = $this->lmfp_get_production_url();
@@ -79,6 +91,9 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 		 *
 		 * @param array  $links Available links.
 		 * @param string $file File name.
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function lmfp_add_settings_link( $links, $file ) {
 			if ( plugin_basename( __FILE__ ) == $file ) {
@@ -90,6 +105,9 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 
 		/**
 		 * Create page in Admin.
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function lmfp_add_admin_menu() {
 			add_options_page( 'Load Media from Production', 'Load Media from Production', 'manage_options', 'load-media-from-production', array( $this, 'lmfp_settings_page' ) );
@@ -97,6 +115,9 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 
 		/**
 		 * Settings page setup.
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function lmfp_settings_page() {
 			// check for user level.
@@ -111,6 +132,9 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 		 * Get path from URL
 		 *
 		 * @param string $url URL path.
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function lmfp_get_path( $url ) {
 			$args = parse_url( $url );
@@ -119,6 +143,9 @@ if ( ! class_exists( 'Load_Media_From_Production' ) ) :
 
 		/**
 		 * Get upload path.
+		 *
+		 * @since  1.0.0
+		 * @author James Hunt
 		 */
 		public function lmfp_get_upload_path() {
 			$args = wp_upload_dir();

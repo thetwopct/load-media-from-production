@@ -2,19 +2,19 @@
 
 Contributors: James Hunt
 Tags: block
-Requires at least: 4.0
-Tested up to: 5.7.0
-Stable tag: 1.0
-Requires PHP: 5.6
+Requires at least: 5.0
+Tested up to: 6.2.0
+Stable tag: 1.1
+Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A super simple way to load your media files from another server. No need to copy or download gigabytes of media. Use on your local development or to quickly fire up staging area without duplicating thousands of media file.
+A super simple way to load your media files from another server. No need to copy or download gigabytes of media. Use on your local development or to quickly fire up staging area without duplicating thousands of media file. Designed to work with Lando and Patheon.
 
 Description
 ===========================
 
-Please see readme.html for full read me.
+Please see readme.md for full read me.
 
 Instructions for Install
 ===========================
