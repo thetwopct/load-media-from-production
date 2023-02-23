@@ -4,7 +4,11 @@ A super simple way to load your media files from another server. No need to copy
 
 It was created specifically to work with [Lando](https://docs.lando.dev) and [Pantheon](https://pantheon.io).
 
-### How to use
+## Download Load Media From Production
+
+You can [download the latest release from this repo](https://github.com/thetwopct/load-media-from-production/tree/main/releases).
+
+### How to use Load Media From Production
 
 1. Download your production site and skip the images.
 2. Install and activate the plugin.
