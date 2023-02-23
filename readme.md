@@ -2,7 +2,7 @@
 
 A super simple way to load your media files from another server. No need to copy or download gigabytes of media. Use on your local development or to quickly fire up staging area without duplicating thousands of media file.
 
-It was created specifically to work with Lando and Pantheon.
+It was created specifically to work with [Lando](https://docs.lando.dev) and [Pantheon](https://pantheon.io).
 
 ### How to use
 
@@ -25,8 +25,8 @@ You could also add this inside a conditional depending on your environment, such
 
 ```bash
 if (WP_DEBUG) {
-		define( 'LOAD_MEDIA_FROM_PRODUCTION_URL', 'https://production-url.com' );
-	}
+	define( 'LOAD_MEDIA_FROM_PRODUCTION_URL', 'https://production-url.com' );
+}
 ```
 
 #### Use WP-CLI to interact with the plugin
@@ -68,3 +68,7 @@ The plugin will work with sites using Classic Editor, Gutenberg Block Editor, El
 ### Change Log
 
 See changelog.txt for changelog.
+
+### Issues
+
+Please open an issue in the [GitHub repo](https://github.com/thetwopct/load-media-from-production/issues). Thanks.
