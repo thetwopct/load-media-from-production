@@ -1,0 +1,22 @@
+{
+  "name": "thetwopct/load-media-from-production",
+  "description": "A super simple way to load your media files from another server.",
+  "version": "1.1.0",
+  "homepage": "https://github.com/thetwopct/load-media-from-production",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "files": ["load-media-from-production.php"]
+  },
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "James Hunt",
+      "email": "10615884+thetwopct@users.noreply.github.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0",
+    "composer/installers": "~1.0"
+  }
+}
